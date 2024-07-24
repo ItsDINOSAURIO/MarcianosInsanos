@@ -85,3 +85,10 @@ Este proyecto permite controlar un rover de forma remota a través de una interf
 ## Contribuciones
 
 Las contribuciones son bienvenidas. Si encuentras algún problema o tienes alguna mejora, por favor, crea un issue o un pull request en GitHub.
+
+## Integrantes
+Luis Fernando Rodriguez Dominguez
+Emiliano Delgado Hernandez
+Angélica Gutiérrez Sánchez
+Raúl Emiliano Guzmán
+erfw
