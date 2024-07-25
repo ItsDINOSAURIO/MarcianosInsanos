@@ -8,6 +8,14 @@ const pointsOfInterest = [
     { x: 300, y: 300 }
 ];
 
+// Rover size, only for the second isOnPointOfInterest function
+const roverWidth = 20;
+const roverHeight = 20;
+
+// Límite del canvas
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
+
 document.addEventListener('keydown', function(event) {
     let move = { x: 0, y: 0 };
     switch (event.key) {
@@ -32,10 +40,14 @@ document.addEventListener('keydown', function(event) {
         default:
             return; // Quit when this doesn't handle the key event.
     }
-
     // Update rover position
-    roverPosition.x += move.x;
-    roverPosition.y += move.y;
+    let newX = roverPosition.x + move.x;
+    let newY = roverPosition.y + move.y;
+    //Limit rover position to canvas
+    newX = Math.max(0, Math.min(canvasWidth - roverWidth, newX));
+    newY = Math.max(0, Math.min(canvasHeight - roverHeight, newY));
+
+    roverPosition = { x: newX, y: newY };
 
     // Send move request to server
     fetch('http://127.0.0.1:5000/move', { 
@@ -50,11 +62,19 @@ document.addEventListener('keydown', function(event) {
         roverPosition = data.position;
         draw();
     });
+
+    draw();
 });
 
+
+//Considering the exact collision with a point of interest
 function isOnPointOfInterest(rover, points) {
     return points.some(point => point.x == rover.x && point.y == rover.y);
 }
+/* Considering any collision with a point of interest
+function isOnPointOfInterest(rover, points) {
+    return points.some(point => Math.abs(point.x - rover.x) < roverWidth && Math.abs(point.y - rover.y) < roverHeight);
+}*/
 
 function openCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -99,9 +119,8 @@ function openCamera() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'seashell';
-    ctx.fillRect(roverPosition.x, roverPosition.y, 20, 20);
+    ctx.fillRect(roverPosition.x, roverPosition.y, roverWidth, roverHeight);
     
-
     pointsOfInterest.forEach(point => {
         ctx.beginPath();
         ctx.arc(point.x + 10, point.y + 10, 10, 0, 2 * Math.PI, false);
