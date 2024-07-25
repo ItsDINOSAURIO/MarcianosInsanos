@@ -88,10 +88,10 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes algun
 
 ## Integrantes
 
--Luis Fernando Rodriguez Dominguez.
--Emiliano Delgado Hernandez.
--Angélica Gutiérrez Sánchez.
--Raúl Emiliano Guzmán.
--
--
--
+- Luis Fernando Rodriguez Dominguez.
+- Emiliano Delgado Hernandez.
+- Angélica Gutiérrez Sánchez.
+- Raúl Emiliano Guzmán.
+- 
+- 
+- 
