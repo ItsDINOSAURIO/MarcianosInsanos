@@ -92,6 +92,6 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes algun
 - Emiliano Delgado Hernandez.
 - Angélica Gutiérrez Sánchez.
 - Raúl Emiliano Guzmán.
-- 
-- 
+- Ana Fernanda Alejaldre Valdez
+- Diego Sandoval Chavarría
 - 
