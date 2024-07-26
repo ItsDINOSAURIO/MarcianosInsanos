@@ -4,6 +4,9 @@ FROM python:3.10-slim
 RUN apt-get update && apt-get install -y \
     libsm6 libxext6 libxrender-dev
 
+# By default, listen on port 5000
+EXPOSE 5000/tcp
+
 # Establecer el directorio de trabajo
 WORKDIR /app
 
