@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://api-marcianos-insanos.eba-tfafpqpq.us-west-2.elasticbeanstalk.com/:path*"
+    }
+  ]
+}
