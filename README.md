@@ -5,66 +5,133 @@ Este proyecto permite controlar un rover de forma remota a través de una interf
 ## Estructura del Proyecto
 
 ```
-├───client
-│   ├───index.html
-│   └───client.js
-└───server
-    └───app.py
+├── client
+│   ├── client.js
+│   └── index.html
+├── proxy
+│   ├── api
+│   │   └── proxy.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vercel.json
+├── README.md
+└── server
+    ├── app.py
+    ├── aruco_detector.py
+    ├── Dockerfile
+    ├── notebookArucos
+    │   ├── arucosample.jpg
+    │   ├── arucos.ipynb
+    │   ├── images.jpeg
+    │   ├── InputImage.jpg
+    │   ├── marker.png
+    │   └── otroaruco.jpeg
+    ├── requirements.txt
+    └── utils.py
 ```
 
-## Requisitos
+## Especificaciones Técnicas del Desarrollo
 
-- Python 3.7+
-- Flask
-- Flask-CORS
+### Tecnologías Utilizadas
+
+- **Frontend**: HTML, JavaScript
+- **Backend**: Python, Flask, Flask-CORS
+- **Proxy**: Node.js, Express
+- **Despliegue**:
+  - Cliente: Vercel
+  - Proxy: Vercel
+  - Servidor: AWS Elastic Beanstalk
+- **Procesamiento de Imágenes**: OpenCV
+- **Control de Versiones**: Git, GitHub
+
+### Requisitos
+
+- Python 3.10+
+- Node.js 20+
 - Navegador web moderno (Chrome, Firefox, etc.)
 
 ## Instalación
 
 1. Clona este repositorio:
 
-    ```bash
-    git clone https://github.com/luisferdev11/MarcianosInsanos.git
-    cd MarcianosInsanos
-    ```
+   ```bash
+   git clone https://github.com/luisferdev11/MarcianosInsanos.git
+   cd MarcianosInsanos
+   ```
 
 2. Navega a la carpeta del servidor e instala las dependencias de Python:
 
-    ```bash
-    cd server
-    pip install flask flask-cors
-    ```
+   ```bash
+   cd server
+   pip install -r requirements.txt
+   ```
+
+3. Navega a la carpeta del proxy e instala las dependencias de Node.js:
+
+   ```bash
+   cd ../proxy
+   npm install
+   ```
 
 ## Ejecución del Servidor
 
 1. Navega a la carpeta del servidor:
 
-    ```bash
-    cd server
-    ```
+   ```bash
+   cd server
+   ```
 
 2. Ejecuta la aplicación Flask:
 
-    ```bash
-    python app.py
-    ```
+   ```bash
+   python app.py
+   ```
 
 3. El servidor se ejecutará en `http://127.0.0.1:5000`.
+
+## Ejecución del Proxy
+
+1. Navega a la carpeta del proxy:
+
+   ```bash
+   cd ../proxy
+   ```
+
+2. Ejecuta el servidor de proxy:
+
+   ```bash
+   npm start
+   ```
+
+3. El proxy se ejecutará en `http://localhost:3000` y redirigirá las solicitudes a la API del servidor.
 
 ## Ejecución del Cliente
 
 1. Navega a la carpeta del cliente:
 
-    ```bash
-    cd client
-    ```
+   ```bash
+   cd ../client
+   ```
 
 2. Abre `index.html` en tu navegador web. Puedes hacerlo simplemente haciendo doble clic en el archivo o abriéndolo desde el navegador.
 
-## Uso
+## Flujo de Datos
 
-- **Mover el Rover**: Usa las teclas de flecha (↑, ↓, ←, →) para mover el rover en la interfaz gráfica.
-- **Tomar Foto**: Presiona Enter cuando el rover esté sobre un punto de interés para abrir la cámara y tomar una foto. La foto será enviada y almacenada en el servidor.
+1. **Movimiento del Rover**:
+
+   - El usuario presiona las teclas de flecha en el cliente.
+   - `client.js` captura los eventos del teclado y envía una solicitud POST al proxy con las nuevas coordenadas.
+   - El proxy reenvía la solicitud al servidor Flask en AWS Elastic Beanstalk.
+   - El servidor Flask actualiza la posición del rover y responde al cliente a través del proxy.
+
+2. **Tomar Foto**:
+   - El usuario presiona Enter en un punto de interés.
+   - `client.js` abre la cámara utilizando `getUserMedia` y toma una foto.
+   - La foto se convierte a base64 y se envía como una solicitud POST al proxy.
+   - El proxy reenvía la solicitud al servidor Flask en AWS Elastic Beanstalk.
+   - El servidor Flask guarda la foto y detecta marcadores ArUco en la imagen utilizando OpenCV.
+   - El servidor responde con los datos de los marcadores ArUco detectados a través del proxy.
+   - `client.js` muestra la foto y los datos de los marcadores ArUco en la interfaz.
 
 ## Estructura del Código
 
@@ -73,14 +140,24 @@ Este proyecto permite controlar un rover de forma remota a través de una interf
 - **index.html**: Archivo HTML que contiene la estructura básica de la página y enlaza el archivo JavaScript.
 - **client.js**: Archivo JavaScript que maneja la lógica de la interfaz gráfica, captura los eventos del teclado y envía solicitudes al servidor.
 
+### Proxy
+
+- **api/proxy.js**: Archivo JavaScript que configura el servidor proxy para redirigir las solicitudes a la API del servidor.
+- **package.json**: Archivo de configuración de Node.js que incluye las dependencias y scripts necesarios para ejecutar el proxy.
+- **vercel.json**: Archivo de configuración de Vercel que define las rutas de proxy.
+
 ### Servidor
 
 - **app.py**: Archivo Python que contiene la aplicación Flask. Maneja las solicitudes de movimiento del rover, toma de fotos y gestión de puntos de interés.
+- **aruco_detector.py**: Archivo Python que contiene la lógica para detectar marcadores ArUco en las imágenes.
+- **utils.py**: Archivo Python que contiene funciones utilitarias, como guardar imágenes.
+- **requirements.txt**: Archivo que contiene las dependencias de Python necesarias para ejecutar la aplicación Flask.
+- **notebookArucos**: Carpeta que contiene un notebook de Jupyter y ejemplos de imágenes para probar la detección de ArUco.
 
 ## Notas Adicionales
 
 - Las fotos tomadas se almacenan en una carpeta `photos` en el servidor. El servidor mantiene un máximo de 10 fotos para evitar el uso excesivo de memoria.
-- El estado de la cola de fotos se guarda en un archivo `photos_queue.json` para asegurar la persistencia entre reinicios del servidor.
+- El estado de la cola de fotos se mantiene en memoria y se reinicia si el servidor se reinicia.
 
 ## Contribuciones
 
@@ -92,6 +169,5 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes algun
 - Emiliano Delgado Hernandez.
 - Angélica Gutiérrez Sánchez.
 - Raúl Emiliano Guzmán.
-- Ana Fernanda Alejaldre Valdez
-- Diego Sandoval Chavarría
-- 
+- Ana Fernanda Alejaldre Valdez.
+- Diego Sandoval Chavarría.
