@@ -216,6 +216,7 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes algun
 - Luis Fernando Rodriguez Dominguez.
 - Emiliano Delgado Hernandez.
 - Angélica Gutiérrez Sánchez.
-- Raúl Emiliano Guzmán.
+- Raúl Emiliano Guzmán Acevedo.
 - Ana Fernanda Alejaldre Valdez.
 - Diego Sandoval Chavarría.
+- Saúl Casquera López.
