@@ -1,11 +1,12 @@
 {
-  "name": "proxy-server",
+  "name": "my-proxy",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api/proxy.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node api/proxy.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "request": "^2.88.2"
   }
 }

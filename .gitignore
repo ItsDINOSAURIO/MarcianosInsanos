@@ -1,2 +1,4 @@
 /server/photos/
 /server/__pycache__/
+
+/proxy/node_modules/
