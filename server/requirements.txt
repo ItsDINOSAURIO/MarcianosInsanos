@@ -1,4 +1,4 @@
 flask
 flask-cors
-opencv-python-headless
-opencv-contrib-python-headless
+opencv-python
+opencv-contrib-python
