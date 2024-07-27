@@ -48,16 +48,13 @@ document.addEventListener("keydown", function (event) {
   roverPosition = { x: newX, y: newY };
 
   // Send move request to server
-  fetch(
-    "http://api-marcianos-insanos.eba-tfafpqpq.us-west-2.elasticbeanstalk.com/move",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(roverPosition),
-    }
-  )
+  fetch("https://marcianos-insanos.vercel.app/api/move", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(roverPosition),
+  })
     .then((response) => response.json())
     .then((data) => {
       roverPosition = data.position;
@@ -89,16 +86,13 @@ function openCamera() {
         const imageData = photoCanvas.toDataURL("image/png");
 
         // Send photo to server
-        fetch(
-          "http://api-marcianos-insanos.eba-tfafpqpq.us-west-2.elasticbeanstalk.com/take-photo",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ roverPosition, image: imageData }),
-          }
-        )
+        fetch("https://marcianos-insanos.vercel.app/api/take-photo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ roverPosition, image: imageData }),
+        })
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -176,13 +170,10 @@ function draw() {
 draw();
 
 // Send points of interest to server on load
-fetch(
-  "http://api-marcianos-insanos.eba-tfafpqpq.us-west-2.elasticbeanstalk.com/points-of-interest",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(pointsOfInterest),
-  }
-);
+fetch("https://marcianos-insanos.vercel.app/api/points-of-interest", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(pointsOfInterest),
+});
