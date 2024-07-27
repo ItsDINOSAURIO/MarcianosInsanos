@@ -154,6 +154,53 @@ Este proyecto permite controlar un rover de forma remota a través de una interf
 - **requirements.txt**: Archivo que contiene las dependencias de Python necesarias para ejecutar la aplicación Flask.
 - **notebookArucos**: Carpeta que contiene un notebook de Jupyter y ejemplos de imágenes para probar la detección de ArUco.
 
+## Despliegue con Docker
+
+El servidor Flask se despliega utilizando Docker para asegurar la consistencia del entorno de ejecución.
+
+### Dockerfile
+
+```Dockerfile
+FROM python:3.10-slim
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    libsm6 libxext6 libxrender-dev libgl1-mesa-glx
+
+# By default, listen on port 5000
+EXPOSE 5000/tcp
+
+# Establecer el directorio de trabajo
+WORKDIR /app
+
+# Copiar los archivos requeridos
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . .
+
+# Comando para ejecutar la aplicación
+CMD ["python", "app.py"]
+```
+
+### Construcción y Ejecución del Contenedor Docker
+
+1. Construir la imagen Docker:
+
+   ```bash
+   docker build -t marcianosinsanos .
+   ```
+
+2. Ejecutar el contenedor Docker:
+
+   ```bash
+   docker run -p 5000:5000 marcianosinsanos
+   ```
+
+## Impacto del Proxy en el Rendimiento
+
+El uso del proxy introduce una latencia adicional en las solicitudes, lo que puede hacer que las respuestas sean más lentas. Sin embargo, este enfoque fue necesario para resolver los problemas de "Mixed Content" y asegurar que todas las solicitudes se realicen a través de HTTPS, mejorando la seguridad del proyecto.
+
 ## Notas Adicionales
 
 - Las fotos tomadas se almacenan en una carpeta `photos` en el servidor. El servidor mantiene un máximo de 10 fotos para evitar el uso excesivo de memoria.
